@@ -1,0 +1,29 @@
+.barraExperiencia {
+  display: flex;
+  align-items: center;
+}
+
+.barraExperiencia span{
+  font-size: 1rem;
+}
+
+.barraExperiencia > div {
+  flex: 1;
+  height: 4px;
+  border-radius: 4px;
+  background: var(--linha-cinza);
+  margin: 0 1.5rem; 
+  position: relative;
+}
+
+.barraExperiencia > div > div {
+  height: 4px;
+  border-radius: 4px;
+  background: var(--verde);
+}
+
+span.experienciaAtual {
+  position: absolute;
+  top: 12px;
+  transform: translateX(-50%)
+}
