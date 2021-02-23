@@ -8,6 +8,7 @@
     "deploy": "gh-pages -d build",
     "dev": "next dev",
     "build": "next build",
+    "export": "next export && touch out/.nojekyll",
     "start": "next start"    
   },
   "dependencies": {
