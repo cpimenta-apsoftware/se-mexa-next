@@ -59,6 +59,30 @@
   transition: background-color 0.2s;
 }
 
-.botaoContagemRegressiva:hover {
+.botaoContagemRegressiva:not(:disabled):hover {
   background: var(--verde);
+  color: var(--titulo);
+}
+
+.botaoContagemRegressivaAtivo {
+  background: var(--branco);
+  color: var(--titulo);
+}
+
+.botaoContagemRegressivaAtivo:not(:disabled):hover {
+  background: var(--vermelho);
+  color: var(--branco)
+}
+
+
+.botaoContagemRegressiva:disabled {
+  background: var(--branco);
+  color: var(--texto);
+  cursor:not-allowed;   
+
+  border-bottom: 4px solid var(--verde);
+}
+
+.botaoContagemRegressiva:disabled > img {
+  margin-left: 1rem;
 }
