@@ -2,44 +2,41 @@ import { useState, useEffect, useContext } from 'react';
 import { ContextoDesafio } from '../contexts/ContextoDesafio';
 import styles from '../styles/components/ContagemRegressiva.module.css';
 
-let ioContagemRegressivaTempoPassado: NodeJS.Timeout;
-const iiTempoMaximo = 0.05 * 60;
-
 export function ContagemRegressiva() {
+  let ioContagemRegressivaTempoPassado: NodeJS.Timeout;
 
-  const { iniciarNovoDesafio } = useContext(ContextoDesafio);  
+  const {
+    iniciarNovoDesafio,
+    ibContagemRegressivaAtiva,
+    iiTempo,
+    redefinirContagemRegressiva,
+    definirTempo,
+    definirContagemRegressivaFinalizada,
+    definirContagemRegressivaAtiva,
+    ibContagemRegressivaFinalizada,
+    iiDezenaMinuto,
+    iiUnidadeMinuto,
+    iiDezenaSegundo,
+    iiUnidadeSegundo,
+    iniciarContagemRegressiva
+  } = useContext(ContextoDesafio);
 
-  const [iiTempo, definirTempo] = useState(iiTempoMaximo);
-  const [ibAtivo, definirAtividade] = useState(false);
-  const [ibFinalizado, definirFinalizado] = useState(false);
-
-  const iiMinuto = Math.floor(iiTempo / 60);
-  const iiSegundo = iiTempo % 60;
-
-  const [iiDezenaMinuto, iiUnidadeMinuto] = String(iiMinuto).padStart(2, '0').split('');
-  const [iiDezenaSegundo, iiUnidadeSegundo] = String(iiSegundo).padStart(2, '0').split('');
-
-  function iniciarContagemRegressiva() {
-    definirAtividade(true);
-  }
-
-  function redefinirContagemRegressiva() {
+  function cancelarContagemRegressiva() {
     clearTimeout(ioContagemRegressivaTempoPassado);
-    definirAtividade(false);
-    definirTempo(iiTempoMaximo);
+    redefinirContagemRegressiva();
   }
 
   useEffect(() => {
-    if (ibAtivo && iiTempo > 0) {
+    if (ibContagemRegressivaAtiva && iiTempo > 0) {
       ioContagemRegressivaTempoPassado = setTimeout(() => {
         definirTempo(iiTempo - 1);
       }, 1000);
-    } else if (ibAtivo && iiTempo === 0) {
-      definirFinalizado(true);
-      definirAtividade(false);
+    } else if (ibContagemRegressivaAtiva && iiTempo === 0) {
+      definirContagemRegressivaFinalizada(true);
+      definirContagemRegressivaAtiva(false);
       iniciarNovoDesafio();
     }
-  }, [ibAtivo, iiTempo]);
+  }, [ibContagemRegressivaAtiva, iiTempo]);
 
   return (
     <div>
@@ -55,31 +52,31 @@ export function ContagemRegressiva() {
         </div>
       </div>
 
-      {ibFinalizado ? (        
+      {ibContagemRegressivaFinalizada ? (
         <button
           disabled
           className={styles.botaoContagemRegressiva}
         >
-          Ciclo encerrado  
-          <img src="icons/check_circle.svg" alt="Check" />          
-        </button>                
+          Ciclo encerrado
+          <img src="icons/check_circle.svg" alt="Check" />
+        </button>
       ) : (
         <>
-          {ibAtivo ? (
+          {ibContagemRegressivaAtiva ? (
             <button type="button"
               className={`${styles.botaoContagemRegressiva} ${styles.botaoContagemRegressivaAtivo}`}
-              onClick={redefinirContagemRegressiva}
+              onClick={cancelarContagemRegressiva}
             >
               Abandonar ciclo
             </button>
           ) : (
-              <button type="button"
-                className={styles.botaoContagemRegressiva}
-                onClick={iniciarContagemRegressiva}
-              >
-                Iniciar um ciclo
-              </button>
-            )}
+            <button type="button"
+              className={styles.botaoContagemRegressiva}
+              onClick={iniciarContagemRegressiva}
+            >
+              Iniciar um ciclo
+            </button>
+          )}
         </>
       )}
     </div>

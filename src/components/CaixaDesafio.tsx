@@ -4,7 +4,7 @@ import styles from '../styles/components/CaixaDesafio.module.css';
 
 export function CaixaDesafio() { 
 
-  const { ioDesafioAtivo, redefinirDesafio } = useContext(ContextoDesafio);    
+  const { ioDesafioAtivo, redefinirDesafio, completarDesafio } = useContext(ContextoDesafio);    
 
   return (
     <div className={styles.conteinerCaixaDesafio}>
@@ -28,6 +28,7 @@ export function CaixaDesafio() {
             <button 
               type="button"
               className={styles.botaoDesafioCompletado}
+              onClick={completarDesafio}
             >
               Completei
             </button>
