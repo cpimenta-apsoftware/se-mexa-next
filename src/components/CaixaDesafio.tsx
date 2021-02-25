@@ -1,10 +1,22 @@
 import { useContext } from 'react';
+import { ContextoContagemRegressiva } from '../contexts/ContextoContagemRegressiva';
 import { ContextoDesafio } from '../contexts/ContextoDesafio';
 import styles from '../styles/components/CaixaDesafio.module.css';
 
 export function CaixaDesafio() { 
 
-  const { ioDesafioAtivo, redefinirDesafio, completarDesafio } = useContext(ContextoDesafio);    
+  const { ioDesafioAtivo, redefinirDesafio, completarDesafio } = useContext(ContextoDesafio); 
+  const { redefinirContagemRegressiva } = useContext(ContextoContagemRegressiva); 
+  
+  function tratarDesafioCompletado(){
+    completarDesafio();
+    redefinirContagemRegressiva();    
+  }
+
+  function tratarDesafioPerdido(){
+    redefinirDesafio();
+    redefinirContagemRegressiva();    
+  }
 
   return (
     <div className={styles.conteinerCaixaDesafio}>
@@ -21,14 +33,14 @@ export function CaixaDesafio() {
             <button 
               type="button"
               className={styles.botaoDesafioPerdido}
-              onClick={redefinirDesafio}
+              onClick={tratarDesafioPerdido}
             >
               Falhei
             </button>
             <button 
               type="button"
               className={styles.botaoDesafioCompletado}
-              onClick={completarDesafio}
+              onClick={tratarDesafioCompletado}
             >
               Completei
             </button>

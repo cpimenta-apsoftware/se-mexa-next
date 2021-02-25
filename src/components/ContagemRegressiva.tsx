@@ -1,42 +1,22 @@
 import { useState, useEffect, useContext } from 'react';
-import { ContextoDesafio } from '../contexts/ContextoDesafio';
+import { ContextoContagemRegressiva } from '../contexts/ContextoContagemRegressiva';
 import styles from '../styles/components/ContagemRegressiva.module.css';
 
-export function ContagemRegressiva() {
-  let ioContagemRegressivaTempoPassado: NodeJS.Timeout;
+export function ContagemRegressiva() {  
 
   const {
-    iniciarNovoDesafio,
-    ibContagemRegressivaAtiva,
-    iiTempo,
-    redefinirContagemRegressiva,
-    definirTempo,
-    definirContagemRegressivaFinalizada,
-    definirContagemRegressivaAtiva,
+    iiMinuto,
+    iiSegundo,
     ibContagemRegressivaFinalizada,
-    iiDezenaMinuto,
-    iiUnidadeMinuto,
-    iiDezenaSegundo,
-    iiUnidadeSegundo,
-    iniciarContagemRegressiva
-  } = useContext(ContextoDesafio);
-
-  function cancelarContagemRegressiva() {
-    clearTimeout(ioContagemRegressivaTempoPassado);
-    redefinirContagemRegressiva();
-  }
-
-  useEffect(() => {
-    if (ibContagemRegressivaAtiva && iiTempo > 0) {
-      ioContagemRegressivaTempoPassado = setTimeout(() => {
-        definirTempo(iiTempo - 1);
-      }, 1000);
-    } else if (ibContagemRegressivaAtiva && iiTempo === 0) {
-      definirContagemRegressivaFinalizada(true);
-      definirContagemRegressivaAtiva(false);
-      iniciarNovoDesafio();
-    }
-  }, [ibContagemRegressivaAtiva, iiTempo]);
+    ibContagemRegressivaAtiva,
+    redefinirContagemRegressiva,
+    iniciarContagemRegressiva    
+  } = useContext(ContextoContagemRegressiva);
+  
+  const [iiDezenaMinuto, iiUnidadeMinuto] = 
+    String(iiMinuto).padStart(2, '0').split('');
+  const [iiDezenaSegundo, iiUnidadeSegundo] = 
+    String(iiSegundo).padStart(2, '0').split('');
 
   return (
     <div>
@@ -64,8 +44,9 @@ export function ContagemRegressiva() {
         <>
           {ibContagemRegressivaAtiva ? (
             <button type="button"
-              className={`${styles.botaoContagemRegressiva} ${styles.botaoContagemRegressivaAtivo}`}
-              onClick={cancelarContagemRegressiva}
+              className={`${styles.botaoContagemRegressiva} 
+                          ${styles.botaoContagemRegressivaAtivo}`}
+              onClick={redefinirContagemRegressiva}
             >
               Abandonar ciclo
             </button>
