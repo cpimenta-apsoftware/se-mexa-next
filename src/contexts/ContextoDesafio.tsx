@@ -1,4 +1,4 @@
-import { createContext, useState, ReactNode } from 'react';
+import { createContext, useState, ReactNode, useEffect } from 'react';
 import desafios from '../../desafios.json';
 
 interface PropriedadeProvedorDesafio {
@@ -33,6 +33,10 @@ export function ProvedorDesafio({ children } : PropriedadeProvedorDesafio) {
   const [ioDesafioAtivo, definirDesafioAtivo] = useState<Desafio>(null);
 
   const iiExperienciaProximoNivel = Math.pow((iiNivel + 1) * 4, 2);
+
+  useEffect(() => {
+    Notification.requestPermission();
+  }, []);
  
   function subirNivel(){
     definirNivel(iiNivel + 1);
@@ -43,6 +47,14 @@ export function ProvedorDesafio({ children } : PropriedadeProvedorDesafio) {
     const loDesafio = desafios[liIndiceAleatorioDesafio] as Desafio;
 
     definirDesafioAtivo(loDesafio);
+
+    new Audio('/notification.mp3').play();
+    
+    if(Notification.permission === 'granted'){
+      new Notification('Novo desafio 🎉', {
+        body: `Valendo ${loDesafio.quantidadeExperiencia} xp!`
+      });      
+    }
   }
 
   function redefinirDesafio(){
