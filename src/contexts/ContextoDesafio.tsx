@@ -1,8 +1,13 @@
 import { createContext, useState, ReactNode, useEffect } from 'react';
+import Cookies from 'js-cookie';
+
 import desafios from '../../desafios.json';
 
 interface PropriedadeProvedorDesafio {
   children: ReactNode;
+  nivel: number;
+  experienciaAtual: number;
+  desafiosCompletados: number;
 }
 
 interface Desafio {
@@ -25,10 +30,15 @@ interface RetornoContextoDesafio {
 
 export const ContextoDesafio = createContext({} as RetornoContextoDesafio);
 
-export function ProvedorDesafio({ children } : PropriedadeProvedorDesafio) {
-  const [iiNivel, definirNivel] = useState(5);
-  const [iiExperienciaAtual, definirExperienciaAtual] = useState(570);
-  const [iiDesafiosCompletados, definirDesafiosCompletados] = useState(9);
+export function ProvedorDesafio({ 
+  children, 
+  ...resto
+} : PropriedadeProvedorDesafio) {
+  const [iiNivel, definirNivel] = useState(resto.nivel ?? 1);
+  const [iiExperienciaAtual, definirExperienciaAtual] = 
+    useState(resto.experienciaAtual ?? 0);
+  const [iiDesafiosCompletados, definirDesafiosCompletados] = 
+    useState(resto.desafiosCompletados ?? 0);
 
   const [ioDesafioAtivo, definirDesafioAtivo] = useState<Desafio>(null);
 
@@ -37,6 +47,12 @@ export function ProvedorDesafio({ children } : PropriedadeProvedorDesafio) {
   useEffect(() => {
     Notification.requestPermission();
   }, []);
+
+  useEffect(() => {
+    Cookies.set('nivel', String(iiNivel));
+    Cookies.set('experienciaAtual', String(iiExperienciaAtual));
+    Cookies.set('desafiosCompletados', String(iiDesafiosCompletados));
+  }, [iiNivel, iiExperienciaAtual, iiDesafiosCompletados]);
  
   function subirNivel(){
     definirNivel(iiNivel + 1);

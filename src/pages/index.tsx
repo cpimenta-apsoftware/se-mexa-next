@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import { GetServerSideProps } from 'next';
 
 import { BarraExperiencia } from "../components/BarraExperiencia";
 import { ContagemRegressiva } from '../components/ContagemRegressiva';
@@ -8,27 +9,59 @@ import { CaixaDesafio } from "../components/CaixaDesafio";
 
 import styles from '../styles/pages/Inicio.module.css';
 import { ProvedorContagemRegressiva } from '../contexts/ContextoContagemRegressiva';
+import { ProvedorDesafio } from '../contexts/ContextoDesafio';
 
-export default function Home() {
+interface PropriedadesInicio {
+  nivel: number;
+  experienciaAtual: number;
+  desafiosCompletados: number;
+}
+
+export default function Home(props: PropriedadesInicio) {
+  console.log(props);
+
   return (
-    <div className={styles.conteiner}>
-      <Head>
-        <title>Início | Se Mexa! </title>
-      </Head>
-      <BarraExperiencia />
+    <ProvedorDesafio
+      nivel={props.nivel}
+      experienciaAtual={props.experienciaAtual}
+      desafiosCompletados={props.desafiosCompletados}
+    >
+      <div className={styles.conteiner}>
+        <Head>
+          <title>Início | Se Mexa! </title>
+        </Head>
+        <BarraExperiencia />
 
-      <ProvedorContagemRegressiva>
-        <section>
-          <div >
-            <Perfil />
-            <DesafioCompletado />
-            <ContagemRegressiva />
-          </div>
-          <div>
-            <CaixaDesafio />
-          </div>
-        </section>
-      </ProvedorContagemRegressiva>
-    </div>
+        <ProvedorContagemRegressiva>
+          <section>
+            <div >
+              <Perfil />
+              <DesafioCompletado />
+              <ContagemRegressiva />
+            </div>
+            <div>
+              <CaixaDesafio />
+            </div>
+          </section>
+        </ProvedorContagemRegressiva>
+      </div>
+    </ProvedorDesafio>
   );
+}
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+
+  const { nivel, experienciaAtual, desafiosCompletados } = ctx.req.cookies;
+
+  const loUsuario: PropriedadesInicio = {
+    nivel: Number(nivel),
+    experienciaAtual: Number(experienciaAtual),
+    desafiosCompletados: Number(desafiosCompletados)
+  }
+
+  //console.log(loUsuario);
+
+  return {
+    props: loUsuario
+  }
 }
