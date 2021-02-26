@@ -2,6 +2,7 @@ import { createContext, useState, ReactNode, useEffect } from 'react';
 import Cookies from 'js-cookie';
 
 import desafios from '../../desafios.json';
+import { CaixaMensagemEvolucaoNivel } from '../components/CaixaMensagemEvolucaoNivel';
 
 interface PropriedadeProvedorDesafio {
   children: ReactNode;
@@ -26,6 +27,7 @@ interface RetornoContextoDesafio {
   iniciarNovoDesafio: () => void;  
   redefinirDesafio: () => void;
   completarDesafio: () => void;  
+  fecharCaixaMensagemEvolucaoNiel: () => void;
 }
 
 export const ContextoDesafio = createContext({} as RetornoContextoDesafio);
@@ -42,6 +44,11 @@ export function ProvedorDesafio({
 
   const [ioDesafioAtivo, definirDesafioAtivo] = useState<Desafio>(null);
 
+  const [
+    ibCaixaMensagemEvolucaoNivelAberto, 
+    definirCaixaMensagemEvolucaoNivelAberto
+  ] = useState(false);
+
   const iiExperienciaProximoNivel = Math.pow((iiNivel + 1) * 4, 2);
 
   useEffect(() => {
@@ -56,6 +63,7 @@ export function ProvedorDesafio({
  
   function subirNivel(){
     definirNivel(iiNivel + 1);
+    definirCaixaMensagemEvolucaoNivelAberto(true);
   }
 
   function iniciarNovoDesafio(){
@@ -96,6 +104,10 @@ export function ProvedorDesafio({
     definirDesafiosCompletados(iiDesafiosCompletados + 1);
   }  
 
+  function fecharCaixaMensagemEvolucaoNiel(){
+    definirCaixaMensagemEvolucaoNivelAberto(false);
+  }
+
   return (
     <ContextoDesafio.Provider 
       value={{
@@ -107,10 +119,12 @@ export function ProvedorDesafio({
         subirNivel,
         iniciarNovoDesafio, 
         redefinirDesafio,
-        completarDesafio,        
+        completarDesafio,     
+        fecharCaixaMensagemEvolucaoNiel   
       }}
     >
       {children}
+      {ibCaixaMensagemEvolucaoNivelAberto && <CaixaMensagemEvolucaoNivel /> }      
     </ContextoDesafio.Provider>
   );
 }
