@@ -54,9 +54,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { nivel, experienciaAtual, desafiosCompletados } = ctx.req.cookies;
 
   const loUsuario: PropriedadesInicio = {
-    nivel: Number(nivel),
-    experienciaAtual: Number(experienciaAtual),
-    desafiosCompletados: Number(desafiosCompletados)
+    nivel: Number(nivel ?? 1),
+    experienciaAtual: Number(experienciaAtual ?? 0),
+    desafiosCompletados: Number(desafiosCompletados ?? 0)
   }
 
   //console.log(loUsuario);

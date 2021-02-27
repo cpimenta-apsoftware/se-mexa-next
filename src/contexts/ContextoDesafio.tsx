@@ -36,11 +36,11 @@ export function ProvedorDesafio({
   children, 
   ...resto
 } : PropriedadeProvedorDesafio) {
-  const [iiNivel, definirNivel] = useState(resto.nivel ?? 1);
+  const [iiNivel, definirNivel] = useState(resto.nivel);
   const [iiExperienciaAtual, definirExperienciaAtual] = 
-    useState(resto.experienciaAtual ?? 0);
+    useState(resto.experienciaAtual);
   const [iiDesafiosCompletados, definirDesafiosCompletados] = 
-    useState(resto.desafiosCompletados ?? 0);
+    useState(resto.desafiosCompletados);
 
   const [ioDesafioAtivo, definirDesafioAtivo] = useState<Desafio>(null);
 
