@@ -17,8 +17,7 @@ interface PropriedadesInicio {
   desafiosCompletados: number;
 }
 
-export default function Home(props: PropriedadesInicio) {
-  console.log(props);
+export default function Home(props: PropriedadesInicio) {  
 
   return (
     <ProvedorDesafio
@@ -58,8 +57,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     experienciaAtual: Number(experienciaAtual ?? 0),
     desafiosCompletados: Number(desafiosCompletados ?? 0)
   }
-
-  //console.log(loUsuario);
 
   return {
     props: loUsuario
